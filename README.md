@@ -6,10 +6,10 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-16a34a.svg)](https://opensource.org/licenses/MIT)
 [![MCP Spec](https://img.shields.io/badge/MCP-JSON--RPC%202.0-blue.svg)](https://modelcontextprotocol.io)
-[![Client-Side](https://img.shields.io/badge/Client--Side-100%25%20In--Browser-emerald.svg)](https://mcptoolbuilder.com)
+[![Client-Side](https://img.shields.io/badge/Client--Side-100%25%20In--Browser-emerald.svg)](https://mcp.seobegin.com)
 [![Hostinger Ready](https://img.shields.io/badge/Deploy-Hostinger%20public__html-purple.svg)](https://hostinger.com)
 
-[**Live Application**](https://mcptoolbuilder.com) • [**Documentation & Guides**](https://mcptoolbuilder.com/blog/) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
+[**Live Application**](https://mcp.seobegin.com) • [**Documentation & Guides**](https://mcp.seobegin.com/blog/) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
 
 </div>
 
@@ -70,11 +70,11 @@ Because this tool is completely static and client-side, it runs with sub-50ms lo
 Are you building an open-source MCP server? Show your users your tools comply with official MCP specifications by adding this badge to your GitHub repository `README.md`:
 
 ```markdown
-[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://mcptoolbuilder.com)
+[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://mcp.seobegin.com)
 ```
 
 **Preview:**  
-[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://mcptoolbuilder.com)
+[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://mcp.seobegin.com)
 
 ---
 

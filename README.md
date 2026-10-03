@@ -6,9 +6,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-16a34a.svg)](https://opensource.org/licenses/MIT)
 [![MCP Spec](https://img.shields.io/badge/MCP-JSON--RPC%202.0-blue.svg)](https://modelcontextprotocol.io)
-[![Client-Side](https://img.shields.io/badge/Client--Side-100%25%20In--Browser-emerald.svg)](https://mcp.seobegin.com)
+[![Client-Side](https://img.shields.io/badge/Client--Side-100%25%20In--Browser-emerald.svg)](https://seobegin.com/mcp-tool-builder)
 
-[**Live Application**](https://mcp.seobegin.com) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
+[**Live Application**](https://seobegin.com/mcp-tool-builder) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
 
 </div>
 
@@ -57,7 +57,7 @@ You can open `index.html` directly in Chrome, Edge, or Safari with zero build or
 Are you building an open-source MCP server? Show your users your tools comply with official MCP specifications by adding this badge to your GitHub repository `README.md`:
 
 ```markdown
-[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://mcp.seobegin.com)
+[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://seobegin.com/mcp-tool-builder)
 ```
 
 **Preview:**  

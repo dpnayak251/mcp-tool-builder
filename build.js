@@ -64,6 +64,8 @@ copyFile('app.js');
 copyFile('favicon.svg');
 copyFile('robots.txt');
 copyFile('sitemap.xml');
+copyFile('about.html');
+copyFile('contact.html');
 copyFile('privacy.html');
 copyFile('terms.html');
 

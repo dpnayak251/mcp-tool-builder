@@ -81,6 +81,14 @@
               "@type": "Answer",
               "text": "No. The MCP Tool Schema Builder runs 100% locally in your web browser. Zero user data, parameter definitions, or code snippets are ever transmitted or stored remotely."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "How does Stdio transport differ from Server-Sent Events (SSE) in MCP?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Stdio transport communicates over standard input/output streams between a locally launched process and the client (like Claude Desktop). SSE transport operates over HTTP, allowing an MCP server to be hosted remotely on a web server."
+            }
           }
         ]
       }
@@ -205,7 +213,7 @@
         <span class="hidden sm:inline">Guides</span>
       </a>
 
-      <!-- Theme Switcher (Light Default, Dark Option) -->
+      <!-- Theme Switcher -->
       <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Light/Dark Theme">
         <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
         <i data-lucide="sun" class="w-4 h-4 block dark:hidden text-amber-500"></i>
@@ -241,12 +249,10 @@
         Show other developers your tools are built with the official Model Context Protocol schema standards.
       </p>
 
-      <!-- Badge Preview -->
       <div class="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center justify-center">
         <img src="https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic" alt="MCP Tool Builder Badge" class="h-6">
       </div>
 
-      <!-- Markdown Code -->
       <div>
         <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Markdown</label>
         <div class="relative">
@@ -255,7 +261,6 @@
         </div>
       </div>
 
-      <!-- HTML Code -->
       <div>
         <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">HTML</label>
         <div class="relative">
@@ -428,60 +433,95 @@
 
   </main>
 
-  <!-- SEO CONTENT & FREQUENTLY ASKED QUESTIONS SECTION -->
-  <section class="max-w-5xl mx-auto px-6 py-16 space-y-12">
+  <!-- SUBSTANTIAL SEO CONTENT: In-Depth Model Context Protocol Developer Guide -->
+  <section class="max-w-5xl mx-auto px-6 py-16 space-y-14">
     
-    <!-- Educational Guide: What is MCP? -->
-    <div>
+    <!-- Hero Editorial Overview -->
+    <div class="border-b border-slate-200 dark:border-slate-800 pb-10">
       <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 mb-3">
-        <i data-lucide="book" class="w-3.5 h-3.5"></i>
-        <span>Developer Guide</span>
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span>Comprehensive Developer Reference</span>
       </div>
       <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
-        What is the Model Context Protocol (MCP)?
+        The Complete Guide to Model Context Protocol (MCP) Tool Development
       </h2>
       <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 mb-4">
-        The <strong>Model Context Protocol (MCP)</strong> is an open standard introduced by Anthropic that provides a unified, secure architecture for AI applications—such as Claude Desktop, Antigravity, and Cursor—to communicate with external tools, local files, and remote APIs.
+        As autonomous AI systems evolve from passive text generators into active agentic coders, the need for a unified tool integration standard has become critical. The <strong>Model Context Protocol (MCP)</strong>, created as an open standard by Anthropic, establishes an interoperable contract between AI client interfaces (such as Claude Desktop, Google Antigravity, Cursor, and Zed) and external services.
       </p>
       <p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
-        Rather than writing custom API wrappers for every AI provider, MCP acts like a universal USB-C cable for AI models. With this interactive builder, you can generate complete, validated schemas and server code in seconds.
+        Prior to MCP, developers were forced to build bespoke function-calling integrations for each specific LLM provider. MCP standardizes this through JSON-RPC 2.0 messages transmitted over local standard I/O (<code class="text-xs font-mono">stdio</code>) or remote Server-Sent Events (<code class="text-xs font-mono">SSE</code>), giving AI agents controlled access to data systems, command line tools, and web services.
       </p>
     </div>
 
-    <!-- 3-Step Quick Guide -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-        <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center font-extrabold text-emerald-700 dark:text-emerald-400 mb-3 text-sm">1</div>
-        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Design Parameters Visually</h3>
-        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-          Specify your tool name, descriptions, argument types, enums, and required flags without writing complex JSON Schemas by hand.
+    <!-- Architectural Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <div class="space-y-4 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+        <h3 class="text-xl font-bold text-slate-900 dark:text-white">How MCP Tool Execution Works</h3>
+        <p>
+          At its core, an MCP session consists of two primary JSON-RPC methods:
         </p>
+        <ol class="list-decimal pl-5 space-y-2">
+          <li><strong><code class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">tools/list</code>:</strong> The client asks the MCP server for available capabilities. The server returns a list of tools with their names, descriptions, and strict JSON Schema input parameters.</li>
+          <li><strong><code class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-semibold">tools/call</code>:</strong> When the AI model decides to invoke a tool, the client formats a request containing the tool name and validated arguments. The server executes the operation and returns structured text or binary content.</li>
+        </ol>
       </div>
 
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-        <div class="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center font-extrabold text-blue-700 dark:text-blue-400 mb-3 text-sm">2</div>
-        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Auto-Generate Server Code</h3>
-        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-          Instantly export TypeScript (<code class="text-[11px] font-mono">@modelcontextprotocol/sdk</code>) with Zod validators or Python with FastMCP decorators.
-        </p>
-      </div>
-
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-        <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-950 flex items-center justify-center font-extrabold text-purple-700 dark:text-purple-400 mb-3 text-sm">3</div>
-        <h3 class="text-base font-bold text-slate-900 dark:text-white mb-2">Connect to Claude Desktop</h3>
-        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-          Copy the generated configuration into your <code class="text-[11px] font-mono">claude_desktop_config.json</code> and start invoking tools immediately.
-        </p>
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm text-xs font-mono text-slate-700 dark:text-slate-300 space-y-2">
+        <div class="text-[11px] font-bold uppercase text-slate-400 dark:text-slate-500 pb-1 border-b border-slate-100 dark:border-slate-800">
+          MCP Communication Protocol Flow
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+          <span class="text-emerald-600 dark:text-emerald-400 font-semibold">1. Client Request (tools/list):</span>
+          <p class="text-[11px] text-slate-500">{"method": "tools/list", "id": 1}</p>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+          <span class="text-blue-600 dark:text-blue-400 font-semibold">2. Server Tool Declaration:</span>
+          <p class="text-[11px] text-slate-500">{"tools": [{"name": "fetch", "inputSchema": {...}}]}</p>
+        </div>
+        <div class="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800">
+          <span class="text-purple-600 dark:text-purple-400 font-semibold">3. Execution (tools/call):</span>
+          <p class="text-[11px] text-slate-500">{"method": "tools/call", "params": {"name": "fetch", "arguments": {...}}}</p>
+        </div>
       </div>
     </div>
 
-    <!-- Frequently Asked Questions (FAQ) -->
+    <!-- 3-Step Quick Implementation -->
     <div>
-      <h2 class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-6">Frequently Asked Questions</h2>
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">3 Steps to Connect Custom Tools to Claude & Antigravity</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+          <div class="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center font-extrabold text-emerald-700 dark:text-emerald-400 mb-3 text-sm">1</div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white mb-2">Design Parameters Visually</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Specify your tool name, descriptions, argument types, enums, and required flags without writing complex JSON Schemas by hand.
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+          <div class="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center font-extrabold text-blue-700 dark:text-blue-400 mb-3 text-sm">2</div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white mb-2">Auto-Generate Server Code</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Instantly export TypeScript (<code class="text-[11px] font-mono">@modelcontextprotocol/sdk</code>) with Zod validators or Python with FastMCP decorators.
+          </p>
+        </div>
+
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+          <div class="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-950 flex items-center justify-center font-extrabold text-purple-700 dark:text-purple-400 mb-3 text-sm">3</div>
+          <h4 class="text-base font-bold text-slate-900 dark:text-white mb-2">Connect to Claude Desktop</h4>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Copy the generated configuration into your <code class="text-[11px] font-mono">claude_desktop_config.json</code> and start invoking tools immediately.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Frequently Asked Questions (FAQ) Accordion -->
+    <div>
+      <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-6">Frequently Asked Questions (FAQ)</h3>
       <div class="space-y-4">
         <details class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 transition">
           <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none text-slate-900 dark:text-white">
-            <span>Why are parameter descriptions essential in MCP?</span>
+            <span>Why are parameter descriptions essential in MCP tools?</span>
             <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
           </summary>
           <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
@@ -491,17 +531,27 @@
 
         <details class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 transition">
           <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none text-slate-900 dark:text-white">
-            <span>Is my code or data uploaded to third-party servers?</span>
+            <span>How does Stdio transport differ from Server-Sent Events (SSE)?</span>
             <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
           </summary>
           <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
-            No. The MCP Tool Schema Builder is 100% client-side. All schema generation, validation, and syntax formatting occur within your browser's local memory.
+            Stdio transport executes as a local subprocess on your machine, communicating directly over stdin and stdout. It provides high security because no network ports are opened. SSE transport operates over HTTP, enabling remote hosting on cloud platforms like Hostinger, AWS, or Docker containers.
           </p>
         </details>
 
         <details class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 transition">
           <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none text-slate-900 dark:text-white">
-            <span>Can I deploy this tool on Hostinger or static hosting?</span>
+            <span>Is my schema data uploaded to external servers?</span>
+            <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
+          </summary>
+          <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
+            No. The MCP Tool Schema Builder is 100% client-side. All schema generation, validation, and syntax formatting occur within your browser's local memory with zero remote storage.
+          </p>
+        </details>
+
+        <details class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 transition">
+          <summary class="flex justify-between items-center font-bold text-sm cursor-pointer list-none text-slate-900 dark:text-white">
+            <span>Can I deploy this builder tool on Hostinger or static hosting?</span>
             <span class="transition group-open:rotate-180"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
           </summary>
           <p class="text-xs text-slate-600 dark:text-slate-400 mt-3 leading-relaxed">
@@ -513,19 +563,21 @@
 
   </section>
 
-  <!-- Global Footer -->
-  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 px-6 text-xs text-slate-500 font-medium">
-    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center space-x-2">
+  <!-- Global Footer with AdSense & Trust Links -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-10 px-6 text-xs text-slate-500 font-medium">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-2.5">
         <img src="favicon.svg" alt="MCP Logo" class="w-5 h-5">
-        <span class="font-semibold text-slate-700 dark:text-slate-300">MCP Tool Schema Builder</span>
-        <span>• MIT License</span>
+        <span class="font-bold text-slate-800 dark:text-slate-200">MCP Tool Schema Builder</span>
+        <span>• Open Source MIT License</span>
       </div>
-      <div class="flex items-center space-x-6">
-        <a href="blog/index.html" class="hover:text-slate-800 dark:hover:text-white transition">Blog & Guides</a>
-        <a href="privacy.html" class="hover:text-slate-800 dark:hover:text-white transition">Privacy Policy</a>
-        <a href="terms.html" class="hover:text-slate-800 dark:hover:text-white transition">Terms of Service</a>
-        <a href="sitemap.xml" class="hover:text-slate-800 dark:hover:text-white transition">Sitemap</a>
+      <div class="flex flex-wrap items-center justify-center gap-6">
+        <a href="about.html" class="hover:text-slate-900 dark:hover:text-white transition">About Us</a>
+        <a href="contact.html" class="hover:text-slate-900 dark:hover:text-white transition">Contact</a>
+        <a href="blog/index.html" class="hover:text-slate-900 dark:hover:text-white transition">Blog & Guides</a>
+        <a href="privacy.html" class="hover:text-slate-900 dark:hover:text-white transition">Privacy Policy</a>
+        <a href="terms.html" class="hover:text-slate-900 dark:hover:text-white transition">Terms of Service</a>
+        <a href="sitemap.xml" class="hover:text-slate-900 dark:hover:text-white transition">Sitemap</a>
       </div>
     </div>
   </footer>
@@ -557,7 +609,6 @@
       }
     }
 
-    // Initialize Theme (Default to Light)
     const savedTheme = localStorage.getItem('mcp_theme') || 'light';
     applyTheme(savedTheme);
 
@@ -567,7 +618,6 @@
       lucide.createIcons();
     });
 
-    // Template Dropdown Toggle
     document.getElementById('templateBtn').addEventListener('click', (e) => {
       e.stopPropagation();
       document.getElementById('templateMenu').classList.toggle('hidden');
@@ -576,7 +626,6 @@
       document.getElementById('templateMenu').classList.add('hidden');
     });
 
-    // Import Modal Helpers
     function openImportModal() {
       document.getElementById('importModal').classList.remove('hidden');
       document.getElementById('importInput').focus();
@@ -585,7 +634,6 @@
       document.getElementById('importModal').classList.add('hidden');
     }
 
-    // Link-Building Badge Modal Helpers
     function openBadgeModal() {
       document.getElementById('badgeModal').classList.remove('hidden');
     }

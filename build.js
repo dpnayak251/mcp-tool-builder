@@ -68,6 +68,9 @@ copyFile('about.html');
 copyFile('contact.html');
 copyFile('privacy.html');
 copyFile('terms.html');
+if (fs.existsSync(path.join(ROOT_DIR, 'googleb2b1ef801fa4da01.html'))) {
+  copyFile('googleb2b1ef801fa4da01.html');
+}
 
 // 3. Copy blog pages
 console.log('\n📚 Bundling SEO blog articles:');

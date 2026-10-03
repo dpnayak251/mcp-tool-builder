@@ -1,80 +1,146 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service | MCP Tool Schema Builder</title>
-  <meta name="description" content="Terms of Service for the open-source MCP Tool Schema Builder utility.">
+  <meta name="description" content="Terms of Service for the open-source MCP Tool Schema Builder utility. Fully open-source under MIT License.">
+  <meta name="google-site-verification" content="o6gHaTn2PvCeIuQuLj6e3S5SXRHeng8sN-LtGfN8N4M">
   <link rel="canonical" href="https://mcp.seobegin.com/terms.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            brand: { 500: '#22c55e', 600: '#16a34a' },
-            dark: { 900: '#0f172a', 950: '#090d16' }
-          }
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: { brand: { 500: '#16a34a', 600: '#15803d' } }
         }
       }
     }
   </script>
+  <script>
+    const savedTheme = localStorage.getItem('mcp_theme') || localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+  </script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-dark-950 text-slate-200 min-h-screen flex flex-col font-sans">
-  <header class="border-b border-slate-800 bg-dark-900/80 backdrop-blur px-6 py-4 flex items-center justify-between">
-    <a href="index.html" class="flex items-center space-x-2 text-white font-bold text-base hover:text-brand-400 transition">
-      <img src="favicon.svg" alt="MCP Tool Builder Logo" class="w-6 h-6">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen flex flex-col font-sans transition-colors duration-200">
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <a href="index.html" class="flex items-center space-x-2.5 font-extrabold text-slate-900 dark:text-white text-base">
+      <img src="favicon.svg" alt="MCP Logo" class="w-6 h-6">
       <span>MCP Tool Builder</span>
     </a>
-    <nav class="flex items-center space-x-6 text-sm text-slate-300">
-      <a href="index.html" class="hover:text-white transition">Builder</a>
-      <a href="blog/index.html" class="hover:text-white transition">Blog</a>
-      <a href="privacy.html" class="hover:text-white transition">Privacy</a>
-      <a href="terms.html" class="text-brand-400 font-medium">Terms</a>
-    </nav>
+    <div class="flex items-center space-x-6">
+      <nav class="flex items-center space-x-6 text-sm font-semibold text-slate-600 dark:text-slate-400">
+        <a href="index.html" class="hover:text-slate-900 dark:hover:text-white transition">Builder</a>
+        <a href="blog/index.html" class="hover:text-slate-900 dark:hover:text-white transition">Blog</a>
+        <a href="about.html" class="hover:text-slate-900 dark:hover:text-white transition">About</a>
+        <a href="contact.html" class="hover:text-slate-900 dark:hover:text-white transition">Contact</a>
+      </nav>
+      <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Light/Dark Theme">
+        <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+        <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+      </button>
+    </div>
   </header>
 
   <main class="flex-1 max-w-3xl mx-auto px-6 py-12">
-    <h1 class="text-3xl font-extrabold text-white mb-4">Terms of Service</h1>
-    <p class="text-sm text-slate-400 mb-8">Last Updated: October 3, 2026</p>
+    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 mb-4">
+      <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+      <span>Terms of Service • Open Source MIT</span>
+    </div>
 
-    <div class="space-y-6 text-slate-300 text-sm leading-relaxed">
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">Terms of Service</h1>
+    <p class="text-sm text-slate-500 mb-8">Effective Date: October 3, 2026</p>
+
+    <div class="space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
       <section>
-        <h2 class="text-lg font-semibold text-white mb-2">1. Acceptance of Terms</h2>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">1. Acceptance of Terms</h2>
         <p>
-          By accessing or using the MCP Tool Schema Builder ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.
+          By accessing or using the MCP Tool Schema Builder ("the Service"), you agree to be bound by these Terms of Service. If you do not agree with any part of these terms, you should not access or use the Service.
         </p>
       </section>
 
       <section>
-        <h2 class="text-lg font-semibold text-white mb-2">2. Description of Service</h2>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">2. Description of Service</h2>
         <p>
-          The Service provides an interactive browser-based utility allowing developers to visually construct, lint, and format Model Context Protocol (MCP) tool schemas and code definitions. The tool is provided free of charge under the open-source MIT License.
+          The Service provides an interactive, client-side web utility allowing developers to visually construct, lint, test, and format Model Context Protocol (MCP) tool schemas and code definitions. The Service is provided free of charge under the open-source MIT License.
         </p>
       </section>
 
       <section>
-        <h2 class="text-lg font-semibold text-white mb-2">3. Intellectual Property of Generated Code</h2>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">3. Intellectual Property of Generated Code</h2>
         <p>
-          All schemas, code snippets, and configuration files generated through this tool belong solely to you. You retain 100% full ownership, copyright, and distribution rights to any code produced by the generator.
+          All schemas, JSON-RPC definitions, TypeScript Zod handlers, FastMCP Python code snippets, and configuration files generated through this tool belong solely to you. You retain 100% full ownership, copyright, and distribution rights to any code produced by the generator.
         </p>
       </section>
 
       <section>
-        <h2 class="text-lg font-semibold text-white mb-2">4. Disclaimer of Warranties</h2>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">4. Disclaimer of Warranties</h2>
         <p>
-          THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. WHILE WE STRIVE FOR EXACT COMPLIANCE WITH OFFICIAL MCP SPECIFICATIONS, WE DO NOT GUARANTEE THAT THE GENERATED CODE WILL BE ERROR-FREE OR SUITABLE FOR ANY SPECIFIC COMMERCIAL APPLICATION.
+          THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NONINFRINGEMENT. WHILE WE STRIVE FOR EXACT COMPLIANCE WITH OFFICIAL MCP SPECIFICATIONS, WE DO NOT GUARANTEE THAT THE GENERATED CODE WILL BE ERROR-FREE OR SUITABLE FOR ANY SPECIFIC COMMERCIAL APPLICATION.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">5. Limitation of Liability</h2>
+        <p>
+          In no event shall the authors, maintainers, or contributors of MCP Tool Schema Builder be liable for any direct, indirect, incidental, special, consequential, or punitive damages arising out of your access to or use of the Service or any generated code.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white mb-2">6. Contact Information</h2>
+        <p>
+          For inquiries regarding these Terms of Service, please reach out to <code class="font-mono text-xs"><a href="mailto:admin@seobegin.com" class="text-brand-600 dark:text-brand-400 hover:underline">admin@seobegin.com</a></code>.
         </p>
       </section>
     </div>
   </main>
 
-  <footer class="border-t border-slate-800 bg-dark-900/60 py-6 px-6 text-center text-xs text-slate-500">
-    <p>© 2026 MCP Tool Schema Builder. Released under the MIT License.</p>
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 px-6 text-center text-xs text-slate-500 font-medium">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 MCP Tool Schema Builder. Open Source under MIT License.</p>
+      <div class="flex items-center space-x-6">
+        <a href="about.html" class="hover:text-slate-800 dark:hover:text-white">About Us</a>
+        <a href="contact.html" class="hover:text-slate-800 dark:hover:text-white">Contact</a>
+        <a href="privacy.html" class="hover:text-slate-800 dark:hover:text-white">Privacy Policy</a>
+        <a href="terms.html" class="text-brand-600 dark:text-brand-400 font-semibold">Terms of Service</a>
+      </div>
+    </div>
   </footer>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+    const btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        const next = isDark ? 'light' : 'dark';
+        if (next === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        }
+        localStorage.setItem('mcp_theme', next);
+        localStorage.setItem('theme', next);
+        lucide.createIcons();
+      });
+    }
+  </script>
 </body>
 </html>

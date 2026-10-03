@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us & Support | MCP Tool Schema Builder</title>
   <meta name="description" content="Get in touch with the MCP Tool Schema Builder team for feature requests, bug reports, contributions, and open-source inquiries.">
+  <meta name="google-site-verification" content="o6gHaTn2PvCeIuQuLj6e3S5SXRHeng8sN-LtGfN8N4M">
   <link rel="canonical" href="https://mcp.seobegin.com/contact.html">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
@@ -27,6 +28,13 @@
       }
     }
   </script>
+  <script>
+    const savedTheme = localStorage.getItem('mcp_theme') || localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    }
+  </script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen flex flex-col font-sans transition-colors duration-200">
@@ -35,12 +43,18 @@
       <img src="favicon.svg" alt="MCP Logo" class="w-6 h-6">
       <span>MCP Tool Builder</span>
     </a>
-    <nav class="flex items-center space-x-6 text-sm font-semibold text-slate-600 dark:text-slate-400">
-      <a href="index.html" class="hover:text-slate-900 dark:hover:text-white transition">Builder</a>
-      <a href="blog/index.html" class="hover:text-slate-900 dark:hover:text-white transition">Blog</a>
-      <a href="about.html" class="hover:text-slate-900 dark:hover:text-white transition">About</a>
-      <a href="contact.html" class="text-brand-600 dark:text-brand-400">Contact</a>
-    </nav>
+    <div class="flex items-center space-x-6">
+      <nav class="flex items-center space-x-6 text-sm font-semibold text-slate-600 dark:text-slate-400">
+        <a href="index.html" class="hover:text-slate-900 dark:hover:text-white transition">Builder</a>
+        <a href="blog/index.html" class="hover:text-slate-900 dark:hover:text-white transition">Blog</a>
+        <a href="about.html" class="hover:text-slate-900 dark:hover:text-white transition">About</a>
+        <a href="contact.html" class="text-brand-600 dark:text-brand-400">Contact</a>
+      </nav>
+      <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Light/Dark Theme">
+        <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+        <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+      </button>
+    </div>
   </header>
 
   <main class="flex-1 max-w-3xl mx-auto px-6 py-12">
@@ -76,7 +90,7 @@
           For general inquiries, partnership proposals, or legal notices, you can reach out directly via email.
         </p>
         <p class="text-xs font-mono font-semibold text-slate-800 dark:text-slate-200 pt-2">
-          contact@seobegin.com
+          <a href="mailto:admin@seobegin.com" class="text-brand-600 dark:text-brand-400 hover:underline">admin@seobegin.com</a>
         </p>
       </div>
     </div>
@@ -93,6 +107,25 @@
       </div>
     </div>
   </footer>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+    const btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        const next = isDark ? 'light' : 'dark';
+        if (next === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        }
+        localStorage.setItem('mcp_theme', next);
+        localStorage.setItem('theme', next);
+        lucide.createIcons();
+      });
+    }
+  </script>
 </body>
 </html>

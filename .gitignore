@@ -3,6 +3,9 @@ dist/
 dist.zip
 *.zip
 
+# Blog folder (omitted from public repository)
+blog/
+
 # Image previews & captures
 *.png
 *.jpg

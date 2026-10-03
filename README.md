@@ -7,9 +7,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-16a34a.svg)](https://opensource.org/licenses/MIT)
 [![MCP Spec](https://img.shields.io/badge/MCP-JSON--RPC%202.0-blue.svg)](https://modelcontextprotocol.io)
 [![Client-Side](https://img.shields.io/badge/Client--Side-100%25%20In--Browser-emerald.svg)](https://mcp.seobegin.com)
-[![Hostinger Ready](https://img.shields.io/badge/Deploy-Hostinger%20public__html-purple.svg)](https://hostinger.com)
 
-[**Live Application**](https://mcp.seobegin.com) • [**Documentation & Guides**](https://mcp.seobegin.com/blog/) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
+[**Live Application**](https://mcp.seobegin.com) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
 
 </div>
 
@@ -27,8 +26,9 @@ Building custom **Model Context Protocol (MCP)** servers for **Claude Desktop**,
   - **Standard MCP JSON Schema:** Full JSON-RPC 2.0 compliant schema for `tools/list`.
   - **TypeScript + Zod:** Ready-to-paste `@modelcontextprotocol/sdk` server code.
   - **Python FastMCP:** Modern `@mcp.tool()` decorators with automatic type hints & docstrings.
-  - **Claude Desktop & Antigravity Config:** Instant `claude_desktop_config.json` snippet.
+  - **Multi-IDE Configuration:** Instant config snippets for Claude Desktop, Cursor, Google Antigravity, and Windsurf.
   - **Test Call Payload:** Standard `tools/call` JSON-RPC request for cURL / MCP inspectors.
+  - **Starter Project ZIP:** Download a complete, runnable TypeScript or Python project repository with 1 click.
 - **LLM Function Calling Linter:** Real-time diagnostics that flag missing parameter descriptions (the #1 cause of agent tool failures).
 - **JSON & Schema Importer:** Paste any sample JSON payload or existing schema to auto-populate parameters in 1 second.
 - **Theme Support:** Clean minimalist Light theme by default, with dark theme toggle saved to `localStorage`.
@@ -52,20 +52,7 @@ You can open `index.html` directly in Chrome, Edge, or Safari with zero build or
 
 ---
 
-## 🌐 Deploying to Hostinger (Zero Cost / Zero Maintenance)
-
-Because this tool is completely static and client-side, it runs with sub-50ms loading times on Hostinger:
-
-1. Run the build script to generate the latest production bundle:
-   ```bash
-   npm run build
-   ```
-2. Upload the generated `dist.zip` (or the contents of `dist/`) directly into your Hostinger **File Manager** under `public_html/`.
-3. Point your custom domain to the directory. Done!
-
----
-
-## 🛡️ Embeddable GitHub Badge (Link Building)
+## 🛡️ Embeddable GitHub Badge
 
 Are you building an open-source MCP server? Show your users your tools comply with official MCP specifications by adding this badge to your GitHub repository `README.md`:
 
@@ -82,20 +69,15 @@ Are you building an open-source MCP server? Show your users your tools comply wi
 
 ```
 mcp-tool-builder/
-├── index.html                 # Main tool application with SEO & FAQ schema
-├── app.js                     # Client-side state & code generators
+├── index.html                 # Main tool application with visual schema generator
+├── app.js                     # Client-side state, linter, & multi-target code generators
 ├── favicon.svg                # Modern SVG vector favicon
 ├── robots.txt                 # Search crawler directives
 ├── sitemap.xml                # Search sitemap
-├── about.html                 # About Us trust page
+├── about.html                 # About Us page
 ├── contact.html               # Contact & support page
-├── privacy.html               # 100% In-browser Privacy Policy (GDPR/AdSense)
+├── privacy.html               # 100% In-browser Privacy Policy (GDPR compliant)
 ├── terms.html                 # Terms of Service (MIT License)
-├── blog/                      # SEO Technical Articles & Guides
-│   ├── index.html             # Blog Hub
-│   ├── how-to-build-mcp-server-typescript.html
-│   ├── mcp-vs-openai-function-calling.html
-│   └── fastmcp-python-guide.html
 ├── build.js                   # Automated packaging script (outputs to dist/)
 ├── server.js                  # Zero-dependency local development server
 ├── package.json               # NPM scripts

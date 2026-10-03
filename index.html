@@ -215,6 +215,12 @@
         <span class="hidden md:inline">Export</span>
       </button>
 
+      <!-- Video Guide Link -->
+      <a href="#video-guide" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
+        <i data-lucide="play-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+        <span class="hidden lg:inline">Video Guide</span>
+      </a>
+
       <!-- Blog Link -->
       <a href="blog/index.html" class="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition">
         <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
@@ -296,9 +302,13 @@
         <i data-lucide="shield" class="w-4 h-4 text-emerald-600"></i>
         <span>GitHub Badge</span>
       </button>
-      <a href="blog/index.html" class="flex items-center space-x-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200">
+      <a href="#video-guide" onclick="closeMobileMenu()" class="col-span-2 flex items-center justify-center space-x-2 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 text-xs font-bold text-emerald-800 dark:text-emerald-300">
+        <i data-lucide="play-circle" class="w-4 h-4 text-emerald-600"></i>
+        <span>Watch Video Walkthrough</span>
+      </a>
+      <a href="blog/index.html" class="col-span-2 flex items-center justify-center space-x-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-800 dark:text-slate-200">
         <i data-lucide="book-open" class="w-4 h-4 text-indigo-500"></i>
-        <span>Blog & Guides</span>
+        <span>Blog & Technical Guides</span>
       </a>
     </div>
     <button onclick="copyShareLink(); closeMobileMenu()" class="w-full flex items-center justify-center space-x-2 p-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm">
@@ -558,6 +568,58 @@
     </section>
 
   </main>
+
+  <!-- VIDEO GUIDE & WALKTHROUGH SECTION -->
+  <section id="video-guide" class="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-6">
+    <div class="bg-gradient-to-br from-slate-900 to-slate-950 text-white rounded-3xl p-6 sm:p-10 border border-slate-800 shadow-2xl overflow-hidden relative">
+      <!-- Decorative background blur -->
+      <div class="absolute -top-24 -right-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Header & Badges -->
+      <div class="relative z-10 max-w-2xl mb-8">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 mb-3">
+          <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
+          <span>Official Video Tutorial & Walkthrough</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3">
+          How to Use MCP Tool Builder: Complete Visual Walkthrough
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          Watch this step-by-step video demonstration to see how to define custom tool signatures, add typed parameters (string, number, boolean, array, object, enum), generate production-ready TypeScript & Python code, and connect your server directly to Claude Desktop, Cursor, and Windsurf.
+        </p>
+      </div>
+
+      <!-- Video Player Container (16:9 responsive) -->
+      <div class="relative z-10 rounded-2xl overflow-hidden border border-slate-700/80 bg-black/60 shadow-inner">
+        <video controls preload="metadata" class="w-full aspect-video object-contain bg-black" poster="preview.png">
+          <source src="how-to-use-mcp-builder-tool.webm" type="video/webm">
+          <source src="How%20to%20Use%20MCP%20Builder%20Tool.webm" type="video/webm">
+          Your browser does not support HTML5 video playback.
+        </video>
+      </div>
+
+      <!-- Video Highlights & Chapters -->
+      <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8 pt-8 border-t border-slate-800 text-xs">
+        <div class="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/50">
+          <span class="text-emerald-400 font-mono font-bold block mb-1">01. Tool Setup</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">Configure tool name, LLM description, and input parameters.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/50">
+          <span class="text-blue-400 font-mono font-bold block mb-1">02. Schema Validation</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">Real-time JSON Schema & Zod type checking preventing hallucinations.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/50">
+          <span class="text-purple-400 font-mono font-bold block mb-1">03. Code Generation</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">Export TypeScript SDK handlers, Python FastMCP decorators, & test payloads.</p>
+        </div>
+        <div class="p-3.5 rounded-xl bg-slate-800/40 border border-slate-700/50">
+          <span class="text-amber-400 font-mono font-bold block mb-1">04. 1-Click Starter Repo</span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">Download runnable GitHub ZIP starter repositories ready for Claude Desktop.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SUBSTANTIAL SEO CONTENT: In-Depth Model Context Protocol Developer Guide -->
   <section class="max-w-5xl mx-auto px-6 py-16 space-y-14">

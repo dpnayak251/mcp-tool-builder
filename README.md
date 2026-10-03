@@ -61,7 +61,7 @@ Are you building an open-source MCP server? Show your users your tools comply wi
 ```
 
 **Preview:**  
-[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://mcp.seobegin.com)
+[![Built with MCP Tool Builder](https://img.shields.io/badge/MCP%20Tool%20Builder-Generated-16a34a?style=flat&logo=anthropic)](https://seobegin.com/mcp-tool-builder)
 
 ---
 

@@ -802,7 +802,7 @@ function downloadStarterZip(runtime = 'typescript') {
 
     const readme = `# ${toolName} MCP Server
 
-Built with [MCP Tool Schema Builder](https://mcp.seobegin.com/) using the official Model Context Protocol specifications.
+Built with [MCP Tool Schema Builder](https://seobegin.com/mcp-tool-builder/) using the official Model Context Protocol specifications.
 
 ## 🚀 Quick Start
 
@@ -855,7 +855,7 @@ pydantic>=2.0.0
 
     const readme = `# ${toolName} FastMCP Python Server
 
-Built with [MCP Tool Schema Builder](https://mcp.seobegin.com/) using FastMCP.
+Built with [MCP Tool Schema Builder](https://seobegin.com/mcp-tool-builder/) using FastMCP.
 
 ## 🚀 Quick Start
 

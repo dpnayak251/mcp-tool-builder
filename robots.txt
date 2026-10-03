@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mcp.seobegin.com/sitemap.xml
+Sitemap: https://seobegin.com/mcp-tool-builder/sitemap.xml

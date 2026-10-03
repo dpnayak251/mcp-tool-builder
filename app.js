@@ -1,10 +1,10 @@
 /**
- * Interactive MCP Tool Schema Builder
- * 100% Client-Side Model Context Protocol Schema Generator
+ * MCP Tool Schema Builder - Interactive Engine
+ * 100% Client-Side Generator for Model Context Protocol (MCP) Tools
+ * Supports: JSON Schema (JSON-RPC 2.0), TypeScript + Zod, Python FastMCP, Multi-IDE Configs, and Starter Project ZIP
  */
 
-// Application State
-let currentTab = 'json';
+// Global Application State
 let toolData = {
   name: 'fetch_web_page',
   description: 'Fetches the text and HTML content of a given URL, strips tracking scripts, and returns clean markdown.',
@@ -32,8 +32,8 @@ let toolData = {
     {
       id: 'p3',
       name: 'timeout',
-      type: 'number',
-      description: 'Maximum time to wait for the HTTP response in milliseconds.',
+      type: 'integer',
+      description: 'Maximum request timeout in milliseconds before aborting.',
       required: false,
       defaultValue: '5000',
       enums: '',
@@ -42,15 +42,18 @@ let toolData = {
   ]
 };
 
-// Available Templates
+let currentTab = 'json';
+let currentConfigIDE = 'claude'; // 'claude' | 'cursor' | 'antigravity' | 'windsurf'
+
+// Curated Production Starter Templates
 const TEMPLATES = {
   webScraper: {
     name: 'fetch_web_page',
     description: 'Fetches the text and HTML content of a given URL, strips tracking scripts, and returns clean markdown.',
     parameters: [
-      { id: 't1', name: 'url', type: 'string', description: 'The complete HTTP or HTTPS URL to fetch.', required: true, defaultValue: '', enums: '', itemType: 'string' },
-      { id: 't2', name: 'format', type: 'string', description: 'Target format of extracted content.', required: false, defaultValue: 'markdown', enums: 'markdown, text, raw_html', itemType: 'string' },
-      { id: 't3', name: 'timeout_ms', type: 'number', description: 'Maximum network timeout in milliseconds.', required: false, defaultValue: '10000', enums: '', itemType: 'string' }
+      { id: 'w1', name: 'url', type: 'string', description: 'The complete HTTP or HTTPS URL of the webpage to fetch and parse.', required: true, defaultValue: '', enums: '', itemType: 'string' },
+      { id: 'w2', name: 'format', type: 'string', description: 'Target format of the extracted page content.', required: false, defaultValue: 'markdown', enums: 'markdown, text, html', itemType: 'string' },
+      { id: 'w3', name: 'timeout', type: 'integer', description: 'Maximum request timeout in milliseconds before aborting.', required: false, defaultValue: '5000', enums: '', itemType: 'string' }
     ]
   },
   sqlQuery: {
@@ -91,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSchema();
 });
 
-// Render Dynamic Parameter Input Rows (Clean Light & Dark Theme Support)
+// Render Dynamic Parameter Input Rows with strict accessibility IDs & labels
 function renderParameters() {
   const container = document.getElementById('parametersList');
   document.getElementById('paramCount').textContent = toolData.parameters.length;
@@ -104,26 +107,26 @@ function renderParameters() {
         <button onclick="addParameter()" class="mt-2 text-xs text-emerald-600 dark:text-emerald-400 hover:underline font-semibold">Add first parameter</button>
       </div>
     `;
-    lucide.createIcons();
+    if (window.lucide) lucide.createIcons();
     return;
   }
 
-  container.innerHTML = toolData.parameters.map((param, index) => `
+  container.innerHTML = toolData.parameters.map((param) => `
     <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 transition shadow-sm hover:border-slate-300 dark:hover:border-slate-700 space-y-3 relative group" id="param-card-${param.id}">
       
       <!-- Top Row: Name, Type, Required Toggle, Delete -->
       <div class="grid grid-cols-12 gap-2.5 items-center">
         <!-- Param Name -->
-        <div class="col-span-5">
-          <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-0.5">Name <span class="text-rose-500">*</span></label>
-          <input type="text" value="${escapeHtml(param.name)}" oninput="updateParam('${param.id}', 'name', this.value)" placeholder="e.g. query, limit"
+        <div class="col-span-12 sm:col-span-5">
+          <label for="param_name_${param.id}" class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-0.5">Name <span class="text-rose-500">*</span></label>
+          <input id="param_name_${param.id}" name="param_name_${param.id}" type="text" value="${escapeHtml(param.name)}" oninput="updateParam('${param.id}', 'name', this.value)" placeholder="e.g. query, limit"
             class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 font-mono focus:outline-none focus:border-brand-500">
         </div>
 
         <!-- Type Selector -->
-        <div class="col-span-4">
-          <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-0.5">Type</label>
-          <select onchange="updateParam('${param.id}', 'type', this.value)"
+        <div class="col-span-7 sm:col-span-4">
+          <label for="param_type_${param.id}" class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-0.5">Type</label>
+          <select id="param_type_${param.id}" name="param_type_${param.id}" onchange="updateParam('${param.id}', 'type', this.value)"
             class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-brand-500">
             <option value="string" ${param.type === 'string' ? 'selected' : ''}>string</option>
             <option value="number" ${param.type === 'number' ? 'selected' : ''}>number (float)</option>
@@ -134,74 +137,65 @@ function renderParameters() {
           </select>
         </div>
 
-        <!-- Required Checkbox -->
-        <div class="col-span-2 flex flex-col items-center justify-center pt-2">
-          <label class="flex items-center space-x-1.5 cursor-pointer">
-            <input type="checkbox" ${param.required ? 'checked' : ''} onchange="updateParam('${param.id}', 'required', this.checked)"
-              class="rounded border-slate-300 dark:border-slate-700 text-emerald-600 focus:ring-emerald-500 bg-slate-50 dark:bg-slate-950 w-3.5 h-3.5">
-            <span class="text-[11px] font-medium text-slate-700 dark:text-slate-300">Req</span>
+        <!-- Required Checkbox & Delete -->
+        <div class="col-span-5 sm:col-span-3 flex items-center justify-end space-x-3 pt-4 sm:pt-3">
+          <label for="param_req_${param.id}" class="flex items-center space-x-1.5 cursor-pointer text-xs text-slate-700 dark:text-slate-300">
+            <input id="param_req_${param.id}" name="param_req_${param.id}" type="checkbox" ${param.required ? 'checked' : ''} onchange="updateParam('${param.id}', 'required', this.checked)"
+              class="w-3.5 h-3.5 text-emerald-600 rounded border-slate-300 dark:border-slate-700 focus:ring-0">
+            <span class="text-[11px] font-medium">Req</span>
           </label>
-        </div>
-
-        <!-- Delete Button -->
-        <div class="col-span-1 flex justify-end pt-2">
-          <button onclick="removeParameter('${param.id}')" class="text-slate-400 hover:text-rose-500 transition p-1" title="Delete parameter">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+          <button onclick="removeParameter('${param.id}')" class="text-slate-400 hover:text-rose-500 p-1 rounded-lg transition" title="Delete parameter" aria-label="Delete parameter ${escapeHtml(param.name)}">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
           </button>
         </div>
       </div>
 
-      <!-- Second Row: Description (Crucial for LLM Function Calling) -->
+      <!-- Description Input -->
       <div>
-        <label class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-0.5">
-          Description <span class="${param.description.trim() ? 'text-slate-400' : 'text-amber-500 font-bold'}">*</span>
+        <label for="param_desc_${param.id}" class="block text-[11px] font-semibold text-slate-600 dark:text-slate-400 mb-0.5">
+          Description <span class="text-rose-500">*</span>
           <span class="text-[10px] text-slate-400 font-normal">(Informs the AI agent what value to supply)</span>
         </label>
-        <input type="text" value="${escapeHtml(param.description)}" oninput="updateParam('${param.id}', 'description', this.value)"
-          placeholder="e.g. Target filter for query..."
-          class="w-full bg-slate-50 dark:bg-slate-950 border ${param.description.trim() ? 'border-slate-300 dark:border-slate-700' : 'border-amber-400 dark:border-amber-500'} rounded-lg px-2.5 py-1.5 text-xs text-slate-900 dark:text-slate-100 focus:outline-none focus:border-brand-500">
+        <input id="param_desc_${param.id}" name="param_desc_${param.id}" type="text" value="${escapeHtml(param.description)}" oninput="updateParam('${param.id}', 'description', this.value)" placeholder="e.g. Target filter for query..."
+          class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-brand-500">
       </div>
 
-      <!-- Third Row (Enums & Default Value) -->
-      <div class="grid grid-cols-12 gap-2.5 pt-0.5 text-xs">
-        <div class="col-span-6">
-          <label class="block text-[10px] font-medium text-slate-500 mb-0.5">Allowed Values (comma-separated enums)</label>
-          <input type="text" value="${escapeHtml(param.enums || '')}" oninput="updateParam('${param.id}', 'enums', this.value)" placeholder="e.g. asc, desc"
-            class="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded px-2 py-1 text-[11px] text-slate-700 dark:text-slate-300 font-mono focus:outline-none focus:border-brand-500">
+      <!-- Advanced: Enums & Default Values -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+        <div>
+          <label for="param_enums_${param.id}" class="block text-[10px] font-medium text-slate-500 dark:text-slate-400 mb-0.5">Allowed Values (comma-separated enums)</label>
+          <input id="param_enums_${param.id}" name="param_enums_${param.id}" type="text" value="${escapeHtml(param.enums || '')}" oninput="updateParam('${param.id}', 'enums', this.value)" placeholder="e.g. asc, desc"
+            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-700 dark:text-slate-300 font-mono">
         </div>
 
-        <div class="col-span-6">
-          <label class="block text-[10px] font-medium text-slate-500 mb-0.5">Default Value</label>
-          <input type="text" value="${escapeHtml(param.defaultValue || '')}" oninput="updateParam('${param.id}', 'defaultValue', this.value)" placeholder="e.g. 10 or 'markdown'"
-            class="w-full bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded px-2 py-1 text-[11px] text-slate-700 dark:text-slate-300 font-mono focus:outline-none focus:border-brand-500">
+        <div>
+          <label for="param_default_${param.id}" class="block text-[10px] font-medium text-slate-500 dark:text-slate-400 mb-0.5">Default Value</label>
+          <input id="param_default_${param.id}" name="param_default_${param.id}" type="text" value="${escapeHtml(param.defaultValue || '')}" oninput="updateParam('${param.id}', 'defaultValue', this.value)" placeholder="e.g. 10 or 'markdown'"
+            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-700 dark:text-slate-300 font-mono">
         </div>
       </div>
 
     </div>
   `).join('');
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
-// Add New Parameter
+// Add Parameter
 function addParameter() {
-  const newId = 'param_' + Date.now();
+  const newId = 'param_' + Date.now().toString().slice(-4);
   toolData.parameters.push({
     id: newId,
     name: 'param_' + (toolData.parameters.length + 1),
     type: 'string',
     description: '',
-    required: false,
+    required: true,
     defaultValue: '',
     enums: '',
     itemType: 'string'
   });
   renderParameters();
   updateSchema();
-  setTimeout(() => {
-    const card = document.getElementById(`param-card-${newId}`);
-    if (card) card.querySelector('input')?.focus();
-  }, 50);
 }
 
 // Remove Parameter
@@ -220,83 +214,89 @@ function updateParam(id, field, value) {
   }
 }
 
-// Update Global Tool Schema
+// Update Global Tool Schema & Rerun Linters
 function updateSchema() {
-  toolData.name = document.getElementById('toolName').value.trim() || 'unnamed_tool';
-  toolData.description = document.getElementById('toolDesc').value.trim() || '';
+  toolData.name = (document.getElementById('toolName').value || 'unnamed_tool').trim();
+  toolData.description = (document.getElementById('toolDesc').value || '').trim();
 
   runDiagnostics();
   renderCode();
 }
 
-// Real-Time Schema Diagnostics / Linter
+// Real-Time Linter for LLM Agent Compatibility
 function runDiagnostics() {
-  const container = document.getElementById('diagnosticsList');
-  const pill = document.getElementById('validationPill');
+  const diagContainer = document.getElementById('diagnosticsList');
+  const validationPill = document.getElementById('validationPill');
   const issues = [];
 
-  if (!/^[a-zA-Z0-9_-]+$/.test(toolData.name)) {
-    issues.push({
-      type: 'error',
-      msg: 'Tool name contains spaces or special characters. Use snake_case or kebab-case.'
-    });
+  if (!toolData.name) {
+    issues.push({ level: 'error', text: 'Tool name is required.' });
+  } else if (!/^[a-zA-Z0-9_-]+$/.test(toolData.name)) {
+    issues.push({ level: 'warning', text: 'Tool name should use snake_case or kebab-case without spaces.' });
   }
 
-  if (toolData.description.length < 15) {
-    issues.push({
-      type: 'warning',
-      msg: 'Tool description is short. LLMs need rich descriptions to know when to trigger this tool.'
-    });
+  if (!toolData.description) {
+    issues.push({ level: 'error', text: 'Tool description is required so LLM agents know when to call it.' });
+  } else if (toolData.description.length < 20) {
+    issues.push({ level: 'warning', text: 'Short description: LLMs make better routing decisions with detailed descriptions.' });
   }
 
-  const missingDesc = toolData.parameters.filter(p => !p.description.trim());
+  const missingDesc = toolData.parameters.filter(p => !p.description || p.description.trim() === '');
   if (missingDesc.length > 0) {
     issues.push({
-      type: 'warning',
-      msg: `${missingDesc.length} parameter(s) missing descriptions (${missingDesc.map(p => p.name).join(', ')}). LLMs hallucinate arguments without descriptions.`
+      level: 'warning',
+      text: `${missingDesc.length} parameter(s) missing descriptions (${missingDesc.map(p => p.name || 'unnamed').join(', ')}). LLMs hallucinate arguments without descriptions.`
     });
   }
 
-  const duplicateNames = toolData.parameters.map(p => p.name).filter((name, idx, arr) => arr.indexOf(name) !== idx && name);
-  if (duplicateNames.length > 0) {
-    issues.push({
-      type: 'error',
-      msg: `Duplicate parameter names detected: ${[...new Set(duplicateNames)].join(', ')}.`
-    });
+  const hasErrors = issues.some(i => i.level === 'error');
+  const hasWarnings = issues.some(i => i.level === 'warning');
+
+  if (hasErrors) {
+    validationPill.className = "text-[11px] px-2.5 py-0.5 rounded-full font-semibold bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-400 border border-rose-300 dark:border-rose-800 flex items-center space-x-1";
+    validationPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span><span>Invalid Schema</span>';
+  } else if (hasWarnings) {
+    validationPill.className = "text-[11px] px-2.5 py-0.5 rounded-full font-semibold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-400 border border-amber-300 dark:border-amber-800 flex items-center space-x-1";
+    validationPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>' + issues.length + ' Recommendation(s)</span>';
+  } else {
+    validationPill.className = "text-[11px] px-2.5 py-0.5 rounded-full font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 flex items-center space-x-1";
+    validationPill.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Valid MCP Schema</span>';
   }
 
   if (issues.length === 0) {
-    pill.className = "text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 flex items-center space-x-1";
-    pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Valid MCP Schema</span>`;
-    container.innerHTML = `
-      <div class="flex items-center space-x-1.5 text-emerald-600 dark:text-emerald-400">
-        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+    diagContainer.innerHTML = `
+      <div class="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+        <i data-lucide="check" class="w-4 h-4"></i>
         <span>Schema is clean and compliant with Model Context Protocol standards.</span>
       </div>
     `;
   } else {
-    const hasError = issues.some(i => i.type === 'error');
-    pill.className = hasError 
-      ? "text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-400 border border-rose-300 dark:border-rose-800 flex items-center space-x-1"
-      : "text-[11px] px-2.5 py-0.5 rounded-full font-medium bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-400 border border-amber-300 dark:border-amber-800 flex items-center space-x-1";
-    pill.innerHTML = `<span class="w-1.5 h-1.5 rounded-full ${hasError ? 'bg-rose-500' : 'bg-amber-500'}"></span><span>${issues.length} Recommendation(s)</span>`;
-    
-    container.innerHTML = issues.map(item => `
-      <div class="flex items-start space-x-1.5 ${item.type === 'error' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-600 dark:text-amber-400'}">
-        <i data-lucide="${item.type === 'error' ? 'x-circle' : 'alert-triangle'}" class="w-3.5 h-3.5 mt-0.5 flex-shrink-0"></i>
-        <span>${item.msg}</span>
+    diagContainer.innerHTML = issues.map(iss => `
+      <div class="flex items-start space-x-2 ${iss.level === 'error' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-600 dark:text-amber-400'}">
+        <i data-lucide="${iss.level === 'error' ? 'alert-circle' : 'alert-triangle'}" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+        <span>${iss.text}</span>
       </div>
     `).join('');
   }
 
-  lucide.createIcons();
+  if (window.lucide) lucide.createIcons();
 }
 
-// Generate Code for Current Tab
+// Multi-Language Code Generator Controller
 function renderCode() {
   const codeEl = document.getElementById('codeOutput');
   const filenameEl = document.getElementById('tabFilename');
   const specEl = document.getElementById('tabSpec');
+  const ideSubtabs = document.getElementById('ideSubtabs');
+
+  if (ideSubtabs) {
+    if (currentTab === 'config') {
+      ideSubtabs.classList.remove('hidden');
+    } else {
+      ideSubtabs.classList.add('hidden');
+    }
+  }
+
   let code = '';
   let lang = 'json';
 
@@ -323,10 +323,21 @@ function renderCode() {
       break;
 
     case 'config':
-      filenameEl.textContent = 'claude_desktop_config.json';
-      specEl.textContent = 'Claude Desktop / Antigravity Config';
       lang = 'json';
-      code = generateConfigSnippet();
+      if (currentConfigIDE === 'cursor') {
+        filenameEl.textContent = '.cursor/mcp.json';
+        specEl.textContent = 'Cursor IDE Configuration';
+      } else if (currentConfigIDE === 'antigravity') {
+        filenameEl.textContent = '.agents/settings.json';
+        specEl.textContent = 'Google Antigravity MCP Config';
+      } else if (currentConfigIDE === 'windsurf') {
+        filenameEl.textContent = 'windsurf/mcp_config.json';
+        specEl.textContent = 'Codeium Windsurf Configuration';
+      } else {
+        filenameEl.textContent = 'claude_desktop_config.json';
+        specEl.textContent = 'Claude Desktop Configuration';
+      }
+      code = generateConfigSnippet(currentConfigIDE);
       break;
 
     case 'test':
@@ -353,6 +364,19 @@ function setTab(tab) {
   const activeBtn = document.getElementById(`tab-${tab}`);
   if (activeBtn) {
     activeBtn.className = "code-tab px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-slate-800 text-emerald-700 dark:text-emerald-400 border border-slate-200 dark:border-slate-700 shadow-sm transition";
+  }
+  renderCode();
+}
+
+// Switch IDE Sub-Tab for MCP Config
+function setConfigIDE(ide) {
+  currentConfigIDE = ide;
+  document.querySelectorAll('.ide-btn').forEach(btn => {
+    btn.className = "ide-btn px-2.5 py-1 text-[11px] font-medium rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition";
+  });
+  const activeBtn = document.getElementById(`ide-btn-${ide}`);
+  if (activeBtn) {
+    activeBtn.className = "ide-btn px-2.5 py-1 text-[11px] font-bold rounded-md bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 transition";
   }
   renderCode();
 }
@@ -401,101 +425,94 @@ function generateMCPJsonSchema() {
   return JSON.stringify(schema, null, 2);
 }
 
-// 2. Generate TypeScript + Zod Server Code
+// 2. Generate TypeScript + Zod Handler Implementation
 function generateTypeScriptCode() {
-  const zodProps = toolData.parameters.map(p => {
+  const zodFields = toolData.parameters.map(p => {
     if (!p.name) return '';
-    let zType = `z.${p.type === 'integer' ? 'number().int()' : p.type}()`;
+    let zType = 'z.string()';
+
+    if (p.type === 'number') zType = 'z.number()';
+    if (p.type === 'integer') zType = 'z.number().int()';
+    if (p.type === 'boolean') zType = 'z.boolean()';
+    if (p.type === 'array') zType = 'z.array(z.string())';
+    if (p.type === 'object') zType = 'z.record(z.any())';
 
     if (p.enums && p.enums.trim()) {
       const enumVals = p.enums.split(',').map(e => `"${e.trim()}"`).join(', ');
       zType = `z.enum([${enumVals}])`;
     }
 
-    if (p.description) {
-      zType += `.describe("${escapeQuotes(p.description)}")`;
+    if (p.defaultValue) {
+      const def = p.type === 'number' || p.type === 'integer' ? p.defaultValue : `"${p.defaultValue}"`;
+      zType += `.default(${def})`;
     }
 
     if (!p.required) {
-      if (p.defaultValue) {
-        const def = p.type === 'number' || p.type === 'integer' ? p.defaultValue : `"${p.defaultValue}"`;
-        zType += `.default(${def})`;
-      } else {
-        zType += `.optional()`;
-      }
+      zType += '.optional()';
+    }
+
+    if (p.description) {
+      zType += `.describe("${escapeQuotes(p.description)}")`;
     }
 
     return `    ${p.name}: ${zType}`;
   }).filter(Boolean).join(',\n');
 
-  const argsDestructured = toolData.parameters.map(p => p.name).filter(Boolean).join(', ');
-
   return `import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
-// Initialize your MCP Server instance
+// Initialize MCP Server
 const server = new McpServer({
-  name: "custom-mcp-server",
+  name: "${toolData.name}-server",
   version: "1.0.0"
 });
 
-/**
- * Tool: ${toolData.name}
- * ${toolData.description}
- */
+// Register Tool: ${toolData.name}
 server.tool(
   "${toolData.name}",
   "${escapeQuotes(toolData.description)}",
   {
-${zodProps}
+${zodFields}
   },
-  async ({ ${argsDestructured} }) => {
+  async (args) => {
     try {
-      // 🚀 Place your business logic here (e.g. database query, API fetch, or file system access)
-      const result = {
-        status: "success",
-        data: { ${argsDestructured} },
-        timestamp: new Date().toISOString()
-      };
-
+      // 🚀 Implement your custom tool logic here
+      // Access validated parameters: args.url, args.limit, etc.
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2)
+            text: \`Successfully executed \${toolData.name} with inputs: \${JSON.stringify(args)}\`
           }
         ]
       };
     } catch (error: any) {
       return {
         isError: true,
-        content: [
-          {
-            type: "text",
-            text: \`Error executing ${toolData.name}: \${error.message}\`
-          }
-        ]
+        content: [{ type: "text", text: \`Error: \${error.message}\` }]
       };
     }
   }
 );
+
+// Connect over Standard I/O (stdio) transport
+const transport = new StdioServerTransport();
+await server.connect(transport);
 `;
 }
 
-// 3. Generate Python (FastMCP) Code
+// 3. Generate Python FastMCP Server Code
 function generatePythonCode() {
-  const typeMap = {
-    string: 'str',
-    number: 'float',
-    integer: 'int',
-    boolean: 'bool',
-    array: 'list[str]',
-    object: 'dict'
-  };
-
   const pyArgs = toolData.parameters.map(p => {
     if (!p.name) return '';
-    const pyType = typeMap[p.type] || 'str';
+    let pyType = 'str';
+    if (p.type === 'number') pyType = 'float';
+    if (p.type === 'integer') pyType = 'int';
+    if (p.type === 'boolean') pyType = 'bool';
+    if (p.type === 'array') pyType = 'list[str]';
+    if (p.type === 'object') pyType = 'dict[str, Any]';
+
     if (!p.required) {
       const defVal = p.defaultValue ? (p.type === 'string' ? `"${p.defaultValue}"` : p.defaultValue) : 'None';
       return `${p.name}: ${pyType} | None = ${defVal}`;
@@ -508,7 +525,7 @@ function generatePythonCode() {
   return `from mcp.server.fastmcp import FastMCP
 
 # Initialize FastMCP Server
-mcp = FastMCP("CustomToolSuite")
+mcp = FastMCP("${toolData.name.replace(/_/g, '-')}-service")
 
 @mcp.tool()
 def ${toolData.name}(${pyArgs}) -> str:
@@ -519,28 +536,80 @@ def ${toolData.name}(${pyArgs}) -> str:
 ${docArgs}
     """
     # 🚀 Implement your execution logic here
-    # Returns string or JSON string to the agent
-    return f"Successfully executed ${toolData.name} with inputs."
+    # Return string output or JSON string back to the agent
+    return f"Successfully executed ${toolData.name}."
+
+if __name__ == "__main__":
+    mcp.run()
 `;
 }
 
-// 4. Generate Claude Desktop / Antigravity MCP Config Snippet
-function generateConfigSnippet() {
+// 4. Generate Multi-IDE Config Snippets
+function generateConfigSnippet(ide = 'claude') {
+  if (ide === 'cursor') {
+    const config = {
+      mcpServers: {
+        [`${toolData.name}-server`]: {
+          command: "node",
+          args: ["./dist/index.js"]
+        }
+      }
+    };
+    return `// Save this file in your project workspace at:
+// .cursor/mcp.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
+  if (ide === 'antigravity') {
+    const config = {
+      mcpServers: {
+        [`${toolData.name}-server`]: {
+          command: "node",
+          args: ["./dist/index.js"]
+        }
+      }
+    };
+    return `// Save this file in your Antigravity workspace or global configuration:
+// - Workspace: .agents/settings.json
+// - Global: ~/.gemini/antigravity/mcp/settings.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
+  if (ide === 'windsurf') {
+    const config = {
+      mcpServers: {
+        [`${toolData.name}-server`]: {
+          command: "node",
+          args: ["./dist/index.js"]
+        }
+      }
+    };
+    return `// Save this file in your Windsurf configuration directory:
+// - macOS: ~/Library/Application Support/Windsurf/mcp_config.json
+// - Windows: %APPDATA%\\Windsurf\\mcp_config.json
+// - Linux: ~/.codeium/windsurf/mcp_config.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
+  // Default: Claude Desktop
   const config = {
     mcpServers: {
-      "my-tool-server": {
+      [`${toolData.name}-server`]: {
         command: "node",
-        args: ["./dist/index.js"],
-        env: {
-          API_KEY: "your_api_key_here"
-        }
+        args: ["./dist/index.js"]
       }
     }
   };
 
-  return `// Save this inside your configuration file:
-// - Claude Desktop: %APPDATA%\\Claude\\claude_desktop_config.json (Windows) or ~/Library/Application Support/Claude/claude_desktop_config.json (macOS)
-// - Antigravity: .agents/settings.json or ~/.gemini/antigravity/mcp/settings.json
+  return `// Save this file inside your Claude Desktop configuration:
+// - Windows: %APPDATA%\\Claude\\claude_desktop_config.json
+// - macOS: ~/Library/Application Support/Claude/claude_desktop_config.json
 
 ${JSON.stringify(config, null, 2)}
 `;
@@ -571,53 +640,60 @@ function generateTestPayload() {
   return JSON.stringify(payload, null, 2);
 }
 
-// Import JSON or Schema
-function processImport() {
-  const raw = document.getElementById('importInput').value.trim();
-  if (!raw) return;
+// Parse Raw JSON or Existing MCP Schema from Modal
+function importJSONSchema() {
+  const rawInput = document.getElementById('jsonImportInput').value.trim();
+  if (!rawInput) return;
 
   try {
-    const parsed = JSON.parse(raw);
-    
-    // Check if it's already an MCP Tool Schema
-    if (parsed.name && (parsed.inputSchema || parsed.properties)) {
-      toolData.name = parsed.name;
-      if (parsed.description) toolData.description = parsed.description;
-      const schemaProps = parsed.inputSchema ? parsed.inputSchema.properties : parsed.properties;
-      const requiredList = parsed.inputSchema ? (parsed.inputSchema.required || []) : (parsed.required || []);
-      
-      toolData.parameters = Object.keys(schemaProps || {}).map((key, i) => {
-        const item = schemaProps[key];
-        return {
-          id: 'imp_' + i + '_' + Date.now(),
-          name: key,
-          type: item.type || 'string',
-          description: item.description || '',
-          required: requiredList.includes(key),
-          defaultValue: item.default !== undefined ? String(item.default) : '',
-          enums: item.enum ? item.enum.join(', ') : '',
-          itemType: item.items ? item.items.type : 'string'
-        };
-      });
-    } else {
-      // It's a sample JSON payload
-      toolData.name = 'imported_custom_tool';
-      toolData.parameters = Object.keys(parsed).map((key, i) => {
-        const val = parsed[key];
-        let pType = typeof val;
-        if (Array.isArray(val)) pType = 'array';
-        if (pType === 'number' && Number.isInteger(val)) pType = 'integer';
+    const parsed = JSON.parse(rawInput);
 
-        return {
-          id: 'imp_' + i + '_' + Date.now(),
+    if (parsed.name && parsed.inputSchema) {
+      toolData.name = parsed.name;
+      toolData.description = parsed.description || '';
+      toolData.parameters = [];
+
+      const props = parsed.inputSchema.properties || {};
+      const requiredList = parsed.inputSchema.required || [];
+
+      Object.entries(props).forEach(([key, val], idx) => {
+        toolData.parameters.push({
+          id: 'imp_' + idx + '_' + Date.now().toString().slice(-4),
           name: key,
-          type: pType,
+          type: val.type || 'string',
+          description: val.description || '',
+          required: requiredList.includes(key),
+          defaultValue: val.default !== undefined ? String(val.default) : '',
+          enums: val.enum ? val.enum.join(', ') : '',
+          itemType: val.items ? val.items.type || 'string' : 'string'
+        });
+      });
+    } else if (typeof parsed === 'object') {
+      toolData.name = 'imported_custom_tool';
+      toolData.parameters = [];
+
+      Object.entries(parsed).forEach(([key, val], idx) => {
+        let detectedType = 'string';
+        if (typeof val === 'number') {
+          detectedType = Number.isInteger(val) ? 'integer' : 'number';
+        } else if (typeof val === 'boolean') {
+          detectedType = 'boolean';
+        } else if (Array.isArray(val)) {
+          detectedType = 'array';
+        } else if (typeof val === 'object' && val !== null) {
+          detectedType = 'object';
+        }
+
+        toolData.parameters.push({
+          id: 'imp_' + idx + '_' + Date.now().toString().slice(-4),
+          name: key,
+          type: detectedType,
           description: `Value for ${key}`,
           required: true,
-          defaultValue: String(val),
+          defaultValue: typeof val === 'object' ? '' : String(val),
           enums: '',
           itemType: 'string'
-        };
+        });
       });
     }
 
@@ -676,6 +752,149 @@ function exportJSON() {
   showToast(`Exported ${toolData.name}_mcp_schema.json`);
 }
 
+// One-Click Starter Repo ZIP Generator (Client-Side via JSZip)
+function downloadStarterZip(runtime = 'typescript') {
+  if (typeof JSZip === 'undefined') {
+    showToast('Loading ZIP compressor, please retry in a second...');
+    return;
+  }
+
+  const zip = new JSZip();
+  const toolName = toolData.name || 'my-mcp-tool';
+
+  if (runtime === 'typescript') {
+    const pkgJson = {
+      name: `${toolName}-mcp-server`,
+      version: "1.0.0",
+      description: toolData.description,
+      type: "module",
+      main: "dist/index.js",
+      scripts: {
+        build: "tsc",
+        start: "node dist/index.js",
+        dev: "tsx src/index.ts"
+      },
+      dependencies: {
+        "@modelcontextprotocol/sdk": "^1.6.1",
+        "zod": "^3.24.2"
+      },
+      devDependencies: {
+        "@types/node": "^22.13.0",
+        "tsx": "^4.19.2",
+        "typescript": "^5.7.3"
+      }
+    };
+
+    const tsConfig = {
+      compilerOptions: {
+        target: "ES2022",
+        module: "NodeNext",
+        moduleResolution: "NodeNext",
+        outDir: "./dist",
+        rootDir: "./src",
+        strict: true,
+        esModuleInterop: true,
+        skipLibCheck: true,
+        forceConsistentCasingInFileNames: true
+      },
+      include: ["src/**/*"]
+    };
+
+    const readme = `# ${toolName} MCP Server
+
+Built with [MCP Tool Schema Builder](https://mcp.seobegin.com/) using the official Model Context Protocol specifications.
+
+## 🚀 Quick Start
+
+1. Install dependencies:
+\`\`\`bash
+npm install
+\`\`\`
+
+2. Build the server:
+\`\`\`bash
+npm run build
+\`\`\`
+
+3. Connect to Claude Desktop:
+Add the following to your \`claude_desktop_config.json\`:
+\`\`\`json
+{
+  "mcpServers": {
+    "${toolName}": {
+      "command": "node",
+      "args": ["${process.cwd ? process.cwd() : '/path/to'}/dist/index.js"]
+    }
+  }
+}
+\`\`\`
+`;
+
+    zip.file("package.json", JSON.stringify(pkgJson, null, 2));
+    zip.file("tsconfig.json", JSON.stringify(tsConfig, null, 2));
+    zip.file(".gitignore", "node_modules/\ndist/\n.env\n*.log\n");
+    zip.file("README.md", readme);
+    zip.file("src/index.ts", generateTypeScriptCode());
+    zip.file("schema.json", generateMCPJsonSchema());
+
+  } else {
+    // Python FastMCP project
+    const pyproject = `[project]
+name = "${toolName}-mcp-server"
+version = "0.1.0"
+description = "${toolData.description}"
+dependencies = [
+    "mcp[cli]>=1.3.0",
+    "pydantic>=2.0.0"
+]
+`;
+
+    const requirements = `mcp[cli]>=1.3.0
+pydantic>=2.0.0
+`;
+
+    const readme = `# ${toolName} FastMCP Python Server
+
+Built with [MCP Tool Schema Builder](https://mcp.seobegin.com/) using FastMCP.
+
+## 🚀 Quick Start
+
+1. Install dependencies:
+\`\`\`bash
+pip install -r requirements.txt
+\`\`\`
+
+2. Run server directly:
+\`\`\`bash
+python server.py
+\`\`\`
+
+3. Run with MCP Inspector / Claude Desktop:
+\`\`\`bash
+mcp dev server.py
+\`\`\`
+`;
+
+    zip.file("pyproject.toml", pyproject);
+    zip.file("requirements.txt", requirements);
+    zip.file(".gitignore", "__pycache__/\n.venv/\n.env\n*.pyc\n");
+    zip.file("README.md", readme);
+    zip.file("server.py", generatePythonCode());
+    zip.file("schema.json", generateMCPJsonSchema());
+  }
+
+  zip.generateAsync({ type: "blob" }).then(content => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(content);
+    a.download = `${toolName}-${runtime}-mcp-starter.zip`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    showToast(`Downloaded ${runtime} starter project .zip!`);
+    closeStarterModal();
+  });
+}
+
 // Shareable URL Hash Link
 function copyShareLink() {
   const stateStr = btoa(encodeURIComponent(JSON.stringify(toolData)));
@@ -700,6 +919,28 @@ function loadFromURL() {
       console.warn('Could not parse shared URL state', e);
     }
   }
+}
+
+// Starter Modal Helpers
+function openStarterModal() {
+  const modal = document.getElementById('starterModal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+function closeStarterModal() {
+  const modal = document.getElementById('starterModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+// Mobile Menu Toggle
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) menu.classList.toggle('hidden');
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) menu.classList.add('hidden');
 }
 
 // Utilities

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MCP Guides & Blog | Model Context Protocol Tutorials & Best Practices</title>
+  <meta name="description" content="In-depth tutorials, developer guides, and architecture comparisons for Anthropic's Model Context Protocol (MCP), FastMCP Python, TypeScript SDK, and Claude Desktop.">
+  <meta name="keywords" content="Model Context Protocol, MCP Tutorial, MCP Python, FastMCP, Claude Desktop Tools, Antigravity MCP, MCP Server TypeScript">
+  <link rel="canonical" href="https://mcptoolbuilder.com/blog/">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+  <!-- OpenGraph / Twitter -->
+  <meta property="og:title" content="MCP Guides & Technical Blog">
+  <meta property="og:description" content="In-depth guides on building, testing, and optimizing Model Context Protocol (MCP) servers.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mcptoolbuilder.com/blog/">
+
+  <!-- Modern Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            brand: { 500: '#16a34a', 600: '#15803d' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen flex flex-col font-sans transition-colors duration-200">
+  
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <a href="../index.html" class="flex items-center space-x-2.5 font-extrabold text-slate-900 dark:text-white text-base">
+      <img src="../favicon.svg" alt="MCP Tool Builder Logo" class="w-6 h-6">
+      <span>MCP Tool Builder</span>
+    </a>
+    
+    <div class="flex items-center space-x-5 text-sm">
+      <a href="../index.html" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition font-medium">Interactive Builder</a>
+      <a href="index.html" class="text-brand-600 dark:text-brand-400 font-bold">Blog & Guides</a>
+      
+      <!-- Theme Switcher Button -->
+      <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Light/Dark Theme">
+        <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+        <i data-lucide="sun" class="w-4 h-4 block dark:hidden text-amber-500"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-1 max-w-4xl mx-auto px-6 py-12">
+    <div class="mb-10 text-center sm:text-left">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 mb-3">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+        <span>Developer Knowledge Base</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-3">Model Context Protocol (MCP) Guides</h1>
+      <p class="text-base text-slate-600 dark:text-slate-400 max-w-2xl font-normal leading-relaxed">
+        Actionable tutorials, architecture breakdowns, and schema optimization techniques for building custom MCP tools.
+      </p>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Article 1 -->
+      <a href="how-to-build-mcp-server-typescript.html" class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-brand-500 dark:hover:border-brand-500 transition flex flex-col justify-between">
+        <div>
+          <span class="text-[11px] font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">Tutorial</span>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition mt-2 mb-3">
+            How to Build a Custom MCP Server with TypeScript and Zod
+          </h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+            Step-by-step guide to installing the official MCP SDK, defining strict Zod parameters, implementing stdio transport, and connecting to Claude Desktop.
+          </p>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-100 dark:border-slate-800/80 font-medium">
+          <span>7 min read</span>
+          <span class="flex items-center space-x-1 text-brand-600 dark:text-brand-400 font-bold">
+            <span>Read guide</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Article 2 -->
+      <a href="mcp-vs-openai-function-calling.html" class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-brand-500 dark:hover:border-brand-500 transition flex flex-col justify-between">
+        <div>
+          <span class="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Deep Dive</span>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition mt-2 mb-3">
+            MCP vs. OpenAI Function Calling: Architecture Comparison
+          </h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+            Why Anthropic's open Model Context Protocol is replacing proprietary function calling as the universal USB-C standard for AI agents.
+          </p>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-100 dark:border-slate-800/80 font-medium">
+          <span>5 min read</span>
+          <span class="flex items-center space-x-1 text-brand-600 dark:text-brand-400 font-bold">
+            <span>Read guide</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+      </a>
+
+      <!-- Article 3 -->
+      <a href="fastmcp-python-guide.html" class="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-brand-500 dark:hover:border-brand-500 transition flex flex-col justify-between">
+        <div>
+          <span class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Python</span>
+          <h2 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition mt-2 mb-3">
+            FastMCP: Build Python Model Context Protocol Tools in 10 Lines
+          </h2>
+          <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
+            Learn how the FastMCP Python framework simplifies MCP server development with decorator-based tool definitions and automatic schema generation.
+          </p>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-500 pt-4 border-t border-slate-100 dark:border-slate-800/80 font-medium">
+          <span>6 min read</span>
+          <span class="flex items-center space-x-1 text-brand-600 dark:text-brand-400 font-bold">
+            <span>Read guide</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 px-6 text-center text-xs text-slate-500 font-medium">
+    <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p>© 2026 MCP Tool Schema Builder. Open Source under MIT License.</p>
+      <div class="flex items-center space-x-5">
+        <a href="../privacy.html" class="hover:text-slate-700 dark:hover:text-slate-300">Privacy Policy</a>
+        <a href="../terms.html" class="hover:text-slate-700 dark:hover:text-slate-300">Terms of Service</a>
+        <a href="../sitemap.xml" class="hover:text-slate-700 dark:hover:text-slate-300">Sitemap</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('mcp_theme') || 'light';
+    if (savedTheme === 'dark') {
+      html.classList.remove('light');
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+      html.classList.add('light');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        localStorage.setItem('mcp_theme', 'light');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        localStorage.setItem('mcp_theme', 'dark');
+      }
+      lucide.createIcons();
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "mcp-tool-schema-builder",
+  "version": "1.0.0",
+  "description": "Interactive visual schema generator for Model Context Protocol (MCP) tools for Claude Desktop, Antigravity, and Cursor.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "schema-builder",
+    "claude-desktop",
+    "antigravity",
+    "zod",
+    "fastmcp",
+    "ai-agents"
+  ],
+  "author": "Antigravity Pair Programmer",
+  "license": "MIT"
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | MCP Tool Schema Builder</title>
+  <meta name="description" content="Privacy policy for the open-source MCP Tool Schema Builder. 100% client-side in-memory processing. Zero analytics, zero data storage.">
+  <link rel="canonical" href="https://mcptoolbuilder.com/privacy.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#22c55e', 600: '#16a34a' },
+            dark: { 900: '#0f172a', 950: '#090d16' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-dark-950 text-slate-200 min-h-screen flex flex-col font-sans">
+  <header class="border-b border-slate-800 bg-dark-900/80 backdrop-blur px-6 py-4 flex items-center justify-between">
+    <a href="index.html" class="flex items-center space-x-2 text-white font-bold text-base hover:text-brand-400 transition">
+      <img src="favicon.svg" alt="MCP Tool Builder Logo" class="w-6 h-6">
+      <span>MCP Tool Builder</span>
+    </a>
+    <nav class="flex items-center space-x-6 text-sm text-slate-300">
+      <a href="index.html" class="hover:text-white transition">Builder</a>
+      <a href="blog/index.html" class="hover:text-white transition">Blog</a>
+      <a href="privacy.html" class="text-brand-400 font-medium">Privacy</a>
+      <a href="terms.html" class="hover:text-white transition">Terms</a>
+    </nav>
+  </header>
+
+  <main class="flex-1 max-w-3xl mx-auto px-6 py-12">
+    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-4">
+      <i data-lucide="shield-check" class="w-4 h-4"></i>
+      <span>100% Client-Side Privacy Guarantee</span>
+    </div>
+
+    <h1 class="text-3xl font-extrabold text-white mb-4">Privacy Policy</h1>
+    <p class="text-sm text-slate-400 mb-8">Last Updated: October 3, 2026</p>
+
+    <div class="space-y-6 text-slate-300 text-sm leading-relaxed">
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-2">1. Our Core Privacy Philosophy</h2>
+        <p>
+          MCP Tool Schema Builder was created for developers and AI engineers who value security and data confidentiality. 
+          The application operates <strong>entirely inside your local web browser</strong> (client-side execution). 
+          We do not transmit, collect, process, or store your schema definitions, API parameters, or code outputs on any remote server.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-2">2. What Data Leaves Your Machine?</h2>
+        <p>
+          <strong>None.</strong> All schema generation, validation, TypeScript/Zod compilation, Python syntax formatting, and JSON-RPC serialization happen locally within your device's browser memory using JavaScript.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-2">3. Cookies and Tracking</h2>
+        <p>
+          This website does not use tracking cookies, third-party analytics trackers (like Google Analytics), or behavioral advertising fingerprinting. 
+          When you use the "Share Link" feature, the tool data is encoded directly into the URL hash fragment (`#state=...`) which is never sent to the web server during HTTP requests.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-2">4. Hosting & Server Logs</h2>
+        <p>
+          Static assets (HTML, CSS, JS, SVG) are served over HTTPS via secure web servers (such as Hostinger / Cloudflare CDN). Standard server access logs (IP address, browser user-agent) may be temporarily recorded by the hosting infrastructure solely for DDoS mitigation and uptime verification.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-white mb-2">5. Open Source & Transparency</h2>
+        <p>
+          Because all source code runs in the browser, you can inspect the entire application logic at any time via your browser's Developer Tools (Ctrl+Shift+I or Cmd+Option+I) under the Sources tab.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-800 bg-dark-900/60 py-6 px-6 text-center text-xs text-slate-500">
+    <p>© 2026 MCP Tool Schema Builder. Released under the MIT License.</p>
+  </footer>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

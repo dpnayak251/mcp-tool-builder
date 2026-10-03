@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Build a Custom MCP Server with TypeScript and Zod | Complete Tutorial</title>
+  <meta name="description" content="Step-by-step tutorial to building a custom Model Context Protocol (MCP) server in TypeScript using @modelcontextprotocol/sdk and Zod. Connect your tools to Claude Desktop and Antigravity.">
+  <meta name="keywords" content="Build MCP Server, Model Context Protocol TypeScript, MCP Zod Schema, Claude Desktop Tools, Antigravity MCP Server Tutorial">
+  <link rel="canonical" href="https://mcptoolbuilder.com/blog/how-to-build-mcp-server-typescript.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#16a34a', 600: '#15803d' }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- JSON-LD TechArticle Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "How to Build a Custom MCP Server with TypeScript and Zod",
+    "description": "Learn how to build, test, and register a Model Context Protocol server using TypeScript, Zod, and Claude Desktop.",
+    "author": {
+      "@type": "Organization",
+      "name": "MCP Tool Builder Team"
+    },
+    "datePublished": "2026-10-03",
+    "publisher": {
+      "@type": "Organization",
+      "name": "MCP Tool Builder",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://mcptoolbuilder.com/favicon.svg"
+      }
+    }
+  }
+  </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen flex flex-col font-sans transition-colors duration-200">
+  
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex items-center justify-between">
+    <a href="../index.html" class="flex items-center space-x-2.5 font-bold text-slate-900 dark:text-white text-base">
+      <img src="../favicon.svg" alt="MCP Tool Builder Logo" class="w-6 h-6">
+      <span>MCP Tool Builder</span>
+    </a>
+    <div class="flex items-center space-x-5 text-sm">
+      <a href="../index.html" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">Builder</a>
+      <a href="index.html" class="text-brand-600 dark:text-brand-400 font-semibold">Blog & Guides</a>
+      <button id="themeToggle" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+        <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+        <i data-lucide="sun" class="w-4 h-4 block dark:hidden text-amber-500"></i>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-3xl mx-auto px-6 py-12">
+    <article class="prose dark:prose-invert max-w-none">
+      
+      <div class="mb-6">
+        <a href="index.html" class="text-xs text-brand-600 dark:text-brand-400 flex items-center space-x-1 mb-3 hover:underline">
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+          <span>Back to All Guides</span>
+        </a>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">
+          How to Build a Custom MCP Server with TypeScript and Zod
+        </h1>
+        <p class="text-xs text-slate-500">Published October 3, 2026 • 7 min read • Technical Tutorial</p>
+      </div>
+
+      <!-- Quick Interactive CTA -->
+      <div class="my-6 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center justify-between">
+        <div>
+          <h4 class="text-sm font-semibold text-emerald-900 dark:text-emerald-300">Need instant tool schemas?</h4>
+          <p class="text-xs text-emerald-700 dark:text-emerald-400">Use our interactive visual builder to generate Zod tool code in 5 seconds.</p>
+        </div>
+        <a href="../index.html" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white hover:bg-brand-500 transition shadow">
+          Launch Builder
+        </a>
+      </div>
+
+      <div class="space-y-6 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+        <p>
+          The <strong>Model Context Protocol (MCP)</strong>, introduced by Anthropic, provides an open specification for connecting AI assistants like Claude Desktop, Antigravity, and Cursor to external tools, APIs, and databases.
+        </p>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">1. Project Setup & Package Installation</h2>
+        <p>Initialize a new Node.js project and install the official MCP SDK and Zod:</p>
+        <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-xs font-mono"><code>mkdir my-mcp-server && cd my-mcp-server
+npm init -y
+npm install @modelcontextprotocol/sdk zod
+npm install -D typescript @types/node tsx</code></pre>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">2. Writing the Server and Tools</h2>
+        <p>Create <code>src/index.ts</code> and instantiate the <code>McpServer</code>:</p>
+        <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-xs font-mono"><code>import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+const server = new McpServer({
+  name: "weather-service",
+  version: "1.0.0"
+});
+
+// Register Tool
+server.tool(
+  "get_forecast",
+  "Fetches the 7-day weather forecast for a specified city name.",
+  {
+    city: z.string().describe("City name to fetch forecast for"),
+    units: z.enum(["celsius", "fahrenheit"]).default("celsius").describe("Temperature unit")
+  },
+  async ({ city, units }) => {
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Weather forecast for ${city}: 22 degrees ${units}, sunny.`
+        }
+      ]
+    };
+  }
+);
+
+// Connect over Stdio Transport
+const transport = new StdioServerTransport();
+await server.connect(transport);</code></pre>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">3. Why Descriptive Zod Schemas Matter</h2>
+        <p>
+          Unlike traditional REST APIs where developers read documentation, AI models read parameter <code>.describe()</code> strings to determine argument values. Omitting descriptions is the single biggest cause of function-calling hallucination.
+        </p>
+
+        <h2 class="text-xl font-bold text-slate-900 dark:text-white pt-4">4. Connecting to Claude Desktop</h2>
+        <p>Open your <code>claude_desktop_config.json</code> and add your server definition:</p>
+        <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-xs font-mono"><code>{
+  "mcpServers": {
+    "weather": {
+      "command": "npx",
+      "args": ["-y", "tsx", "D:/my-mcp-server/src/index.ts"]
+    }
+  }
+}</code></pre>
+        <p>Restart Claude Desktop, click the hammer icon, and your custom tool is instantly callable!</p>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 py-8 px-6 text-center text-xs text-slate-500">
+    <p>© 2026 MCP Tool Schema Builder. Open Source under MIT License.</p>
+  </footer>
+
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('mcp_theme') || 'light';
+    if (savedTheme === 'dark') { html.classList.remove('light'); html.classList.add('dark'); }
+    themeBtn.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      html.classList.toggle('light');
+      localStorage.setItem('mcp_theme', html.classList.contains('dark') ? 'dark' : 'light');
+      lucide.createIcons();
+    });
+    lucide.createIcons();
+  </script>
+</body>
+</html>

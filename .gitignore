@@ -1,3 +1,13 @@
+# Distribution & Build Outputs (Only deploy to hosting, not in source git)
+dist/
+dist.zip
+*.zip
+
+# Image previews & captures
+*.png
+*.jpg
+*.jpeg
+
 # Dependencies
 node_modules/
 .pnp
@@ -5,10 +15,9 @@ node_modules/
 
 # Environment variables & secrets
 .env
-.env.local
-.env.production
+.env.*
 
-# Personal notes & domain lists
+# Personal research notes & domain lists
 *.txt
 
 # Logs

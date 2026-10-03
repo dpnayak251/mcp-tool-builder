@@ -9,11 +9,7 @@
 [![Client-Side](https://img.shields.io/badge/Client--Side-100%25%20In--Browser-emerald.svg)](https://mcptoolbuilder.com)
 [![Hostinger Ready](https://img.shields.io/badge/Deploy-Hostinger%20public__html-purple.svg)](https://hostinger.com)
 
-[**Live Application**](https://mcptoolbuilder.com) • [**Documentation & Guides**](https://mcptoolbuilder.com/blog/) • [**Report a Bug**](https://github.com/your-username/mcp-tool-builder/issues)
-
-<br/>
-
-<img src="preview.png" alt="MCP Tool Builder Preview" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
+[**Live Application**](https://mcptoolbuilder.com) • [**Documentation & Guides**](https://mcptoolbuilder.com/blog/) • [**Report a Bug**](https://github.com/dpnayak251/mcp-tool-builder/issues)
 
 </div>
 
@@ -45,14 +41,14 @@ Building custom **Model Context Protocol (MCP)** servers for **Claude Desktop**,
 
 ### Option 1: Run Locally (Node.js)
 ```bash
-git clone https://github.com/your-username/mcp-tool-builder.git
+git clone https://github.com/dpnayak251/mcp-tool-builder.git
 cd mcp-tool-builder
 node server.js
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Option 2: Open Directly Without a Server
-You can open `dist/index.html` directly in Chrome, Edge, or Safari with zero build or install steps!
+You can open `index.html` directly in Chrome, Edge, or Safari with zero build or install steps!
 
 ---
 
@@ -64,9 +60,8 @@ Because this tool is completely static and client-side, it runs with sub-50ms lo
    ```bash
    npm run build
    ```
-2. Upload the generated `dist.zip` file directly into your Hostinger **File Manager** under `public_html/`.
-3. Click **Extract**.
-4. Point your domain (e.g. `mcpbuilder.dev`) to the directory. Done!
+2. Upload the generated `dist.zip` (or the contents of `dist/`) directly into your Hostinger **File Manager** under `public_html/`.
+3. Point your custom domain to the directory. Done!
 
 ---
 
@@ -83,25 +78,25 @@ Are you building an open-source MCP server? Show your users your tools comply wi
 
 ---
 
-## 📂 Project Structure
+## 📂 Source Code Structure
 
 ```
 mcp-tool-builder/
-├── dist/                      # Production build output (upload to public_html)
-│   ├── index.html             # Main tool application with SEO & FAQ schema
-│   ├── app.js                 # Client-side state & code generators
-│   ├── favicon.svg            # Modern SVG vector favicon
-│   ├── robots.txt             # Search crawler directives
-│   ├── sitemap.xml            # Search sitemap
-│   ├── privacy.html           # 100% In-browser Privacy Policy
-│   ├── terms.html             # Terms of Service
-│   └── blog/                  # SEO Technical Articles & Guides
-│       ├── index.html         # Blog Hub
-│       ├── how-to-build-mcp-server-typescript.html
-│       ├── mcp-vs-openai-function-calling.html
-│       └── fastmcp-python-guide.html
-├── dist.zip                   # 1-Click ready Hostinger archive
-├── build.js                   # Automated build & packaging script
+├── index.html                 # Main tool application with SEO & FAQ schema
+├── app.js                     # Client-side state & code generators
+├── favicon.svg                # Modern SVG vector favicon
+├── robots.txt                 # Search crawler directives
+├── sitemap.xml                # Search sitemap
+├── about.html                 # About Us trust page
+├── contact.html               # Contact & support page
+├── privacy.html               # 100% In-browser Privacy Policy (GDPR/AdSense)
+├── terms.html                 # Terms of Service (MIT License)
+├── blog/                      # SEO Technical Articles & Guides
+│   ├── index.html             # Blog Hub
+│   ├── how-to-build-mcp-server-typescript.html
+│   ├── mcp-vs-openai-function-calling.html
+│   └── fastmcp-python-guide.html
+├── build.js                   # Automated packaging script (outputs to dist/)
 ├── server.js                  # Zero-dependency local development server
 ├── package.json               # NPM scripts
 ├── CONTRIBUTING.md            # Guidelines for open source contributors

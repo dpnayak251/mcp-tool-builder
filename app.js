@@ -597,6 +597,83 @@ ${JSON.stringify(config, null, 2)}
 `;
   }
 
+  if (ide === 'vscode') {
+    const config = {
+      "mcp.servers": {
+        [`${toolData.name}-server`]: {
+          type: "stdio",
+          command: "node",
+          args: ["./dist/index.js"]
+        }
+      }
+    };
+    return `// Save this snippet in your VS Code workspace settings:
+// .vscode/settings.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
+  if (ide === 'zed') {
+    const config = {
+      context_servers: {
+        [`${toolData.name}-server`]: {
+          command: {
+            path: "node",
+            args: ["./dist/index.js"]
+          }
+        }
+      }
+    };
+    return `// Save this configuration in your Zed settings:
+// - macOS: ~/Library/Application Support/Zed/settings.json
+// - Linux: ~/.config/zed/settings.json
+// - Windows: %APPDATA%\\Zed\\settings.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
+  if (ide === 'cline') {
+    const config = {
+      mcpServers: {
+        [`${toolData.name}-server`]: {
+          command: "node",
+          args: ["./dist/index.js"],
+          disabled: false,
+          autoApprove: []
+        }
+      }
+    };
+    return `// Save this inside your Cline / Roo-Code MCP settings:
+// - macOS: ~/Library/Application Support/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+// - Windows: %APPDATA%\\Code\\User\\globalStorage\\saoudrizwan.claude-dev\\settings\\cline_mcp_settings.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
+  if (ide === 'continue') {
+    const config = {
+      experimental: {
+        modelContextProtocolServers: [
+          {
+            transport: {
+              type: "stdio",
+              command: "node",
+              args: ["./dist/index.js"]
+            }
+          }
+        ]
+      }
+    };
+    return `// Save this inside your Continue.dev configuration:
+// ~/.continue/config.json
+
+${JSON.stringify(config, null, 2)}
+`;
+  }
+
   // Default: Claude Desktop
   const config = {
     mcpServers: {
